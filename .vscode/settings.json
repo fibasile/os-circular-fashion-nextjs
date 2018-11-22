@@ -1,0 +1,13 @@
+{
+    "javascript.format.insertSpaceAfterConstructor": true,
+    "emmet.includeLanguages": {
+        "javacript": "javacriptreact"
+    },
+    "deepscan.enable": true,
+    // Set the default
+    "editor.formatOnSave": false,
+    // Enable per-language
+    "[javascript]": {
+        "editor.formatOnSave": true
+    }
+}
