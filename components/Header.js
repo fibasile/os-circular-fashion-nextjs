@@ -89,8 +89,10 @@ const Header = (props) => {
             </Link>
             <div className={classes.grow} />
             
-            <Button color="inherit" href="/upload">Upload</Button>
-            <Button color="inherit" href="/login">Sign in</Button>
+          <Button color="inherit" href="/upload">Upload</Button>
+          <Link href="/login">
+            <Button color="inherit" >Sign in</Button>
+            </Link>
             <div className={classes.search}>
                 <div className={classes.searchIcon}>
                 <SearchIcon />

@@ -1,19 +1,42 @@
-import Project from './project'
+import {
+  action,
+  observable
+} from 'mobx'
+import {
+  useStaticRendering
+} from 'mobx-react'
 
+const isServer = typeof window === 'undefined'
+useStaticRendering(isServer)
 
-const stores= {
-    __projectStore__: initialState => new Project(initialState)
+class Store {
+  @observable lastUpdate = 0
+  @observable light = false
+
+  constructor (isServer, initialData = {}) {
+    this.lastUpdate = initialData.lastUpdate != null ? initialData.lastUpdate : Date.now()
+    this.light = !!initialData.light
+  }
+
+  @action start = () => {
+    this.timer = setInterval(() => {
+      this.lastUpdate = Date.now()
+      this.light = true
+    }, 1000)
+  }
+
+  stop = () => clearInterval(this.timer)
 }
 
 
-export default (store, initialState) => {
-    const storeConstruct = stores[store];
-    if (typeof window !== 'undefined') {
-      if (!window[store]) {
-        window[store] = storeConstruct(initialState);
-      }
-      return window[store];
-    } else {
-      return storeConstruct(initialState);
-    }
-  };
+let store = null
+export function initializeStore(initialData) {
+  // Always make a new store if server, otherwise state is shared between requests
+  if (isServer) {
+    return new Store(isServer, initialData)
+  }
+  if (store === null) {
+    store = new Store(isServer, initialData)
+  }
+  return store
+}
